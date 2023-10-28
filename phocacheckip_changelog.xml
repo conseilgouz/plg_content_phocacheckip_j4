@@ -1,0 +1,39 @@
+<changelogs>
+	<changelog>
+		<element>phocacheckip</element>
+		<type>plugin</type>
+		<group>content</group>
+		<version>3.0.0</version>
+        <note>
+            <item>Update : 28/10/2023</item>
+        </note>
+         <change>
+            <item>Plugin as service</item>
+            <item>Update/changelog on github</item>
+        </change>
+	</changelog>
+	<changelog>
+		<element>phocacheckip</element>
+		<type>plugin</type>
+		<group>content</group>
+		<version>2.0.1</version>
+        <note>
+            <item>Update : 01/11/2021</item>
+        </note>
+         <fix>
+            <item>Check if library is present</item>
+        </fix>
+	</changelog>
+	<changelog>
+		<element>phocacheckip</element>
+		<type>plugin</type>
+		<group>content</group>
+		<version>2.0.0</version>
+        <note>
+            <item>Update : 01/11/2021</item>
+        </note>
+         <addition>
+            <item>Joomla 4.0 compatibility</item>
+        </addition>
+	</changelog>
+</changelogs>

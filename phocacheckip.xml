@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension group="content" method="upgrade" type="plugin" version="4">
+	<name>PLG_CONTENT_PHOCACHECKIP</name>
+	<creationDate>2023/10/28</creationDate>
+	<author>ConseilGouz</author>
+	<authorEmail></authorEmail>
+	<authorUrl>www.conseilgouz.com</authorUrl>
+	<copyright>ConseilGouz</copyright>
+	<license>GNU/GPL</license>
+	<version>3.0.0</version>
+	<description>PLG_CONTENT_PHOCACHECKIP_DESC</description>
+	<files>
+		<folder plugin="phocacheckip">services</folder>
+		<folder>src</folder>
+		<filename >index.html</filename>
+	</files>
+	<languages>
+		<language tag="fr-FR">language/fr-FR/plg_content_phocacheckip.ini</language>
+		<language tag="fr-FR">language/fr-FR/plg_content_phocacheckip.sys.ini</language>
+		<language tag="en-GB">language/en-GB/plg_content_phocacheckip.ini</language>
+		<language tag="en-GB">language/en-GB/plg_content_phocacheckip.sys.ini</language>
+	</languages>
+	<scriptfile>script.php</scriptfile>
+	<changelogurl>https://raw.githubusercontent.com/conseilgouz/plg_content_phocacheckip_j4/master/phocacheckip_changelog.xml</changelogurl>
+	<config>
+	<fields name="params">
+		<fieldset name="basic">
+		</fieldset>
+	</fields>
+	</config>
+    <updateservers>
+        <server type="extension" name="phocacheckip">https://raw.githubusercontent.com/conseilgouz/updates_github/master/phocacheckip_update.xml</server>
+    </updateservers>
+</extension>
