@@ -9,6 +9,7 @@
 	<license>GNU/GPL</license>
 	<version>3.0.0</version>
 	<description>PLG_CONTENT_PHOCACHECKIP_DESC</description>
+	<namespace path="src">ConseilGouz\Plugin\Content\Phocacheckip</namespace>
 	<files>
 		<folder plugin="phocacheckip">services</folder>
 		<folder>src</folder>
