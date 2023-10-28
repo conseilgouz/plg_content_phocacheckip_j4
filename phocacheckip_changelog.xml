@@ -10,6 +10,7 @@
          <change>
             <item>Plugin as service</item>
             <item>Update/changelog on github</item>
+            <item>Call Check using namespaces</item>
         </change>
 	</changelog>
 	<changelog>
