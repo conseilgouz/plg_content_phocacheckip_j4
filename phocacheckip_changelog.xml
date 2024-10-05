@@ -3,6 +3,18 @@
 		<element>phocacheckip</element>
 		<type>plugin</type>
 		<group>content</group>
+		<version>3.0.1</version>
+        <note>
+            <item>Update : 05/10/2024</item>
+        </note>
+         <fix>
+            <item>JText not defined error</item>
+        </fix>
+	</changelog>
+	<changelog>
+		<element>phocacheckip</element>
+		<type>plugin</type>
+		<group>content</group>
 		<version>3.0.0</version>
         <note>
             <item>Update : 28/10/2023</item>

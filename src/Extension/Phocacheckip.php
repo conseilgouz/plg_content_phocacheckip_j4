@@ -1,10 +1,9 @@
 <?php 
 /**
- * @version		3.0.0
  * @package		PhocaCheckIP content plugin
  * @author		ConseilGouz
- * @copyright	Copyright (C) 2023 ConseilGouz. All rights reserved.
- * @license		GNU/GPL v2; see LICENSE.php
+ * @copyright	Copyright (C) 2024 ConseilGouz. All rights reserved.
+ * @license		GNU/GPL v3; see LICENSE.php
  **/
 namespace ConseilGouz\Plugin\Content\Phocacheckip\Extension; 
 defined( '_JEXEC' ) or die( 'Restricted access' );
@@ -15,7 +14,7 @@ use Joomla\CMS\Language\Text;
 use ConseilGouz\CGSecure\Helper\Cgipcheck;
 
 if (!ComponentHelper::isEnabled('com_phocadownload', true)) {
-    return Factory::getApplication()->enqueueMessage(Text::_('CG_PHOCADOWNLOAD_NOT_INSTALLED_ON_YOUR_SYSTEM'),JText::_('CG_PHOCADOWNLOAD_ERROR'));
+    return Factory::getApplication()->enqueueMessage(Text::_('CG_PHOCADOWNLOAD_NOT_INSTALLED_ON_YOUR_SYSTEM'),Text::_('CG_PHOCADOWNLOAD_ERROR'));
 }
 
 class Phocacheckip extends CMSPlugin
@@ -44,7 +43,7 @@ class Phocacheckip extends CMSPlugin
 			$spammer = Cgipcheck::check_spammer($this,$this->myname.' : hide links');
 			if (!$spammer) return; // everything OK => exit
 			for($i = 0; $i < $count_matches; $i++) { // spammer : replace shortcodes
-			$article->text = preg_replace($regex_all, JText::_('CG_DOWNLOAD_NOT_ALLOWED'), $article->text, 1);
+			$article->text = preg_replace($regex_all, Text::_('CG_DOWNLOAD_NOT_ALLOWED'), $article->text, 1);
 			}
 		}
 		return true;
