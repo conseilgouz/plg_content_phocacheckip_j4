@@ -2,38 +2,49 @@
 /**
  * @package		PhocaCheckIP content plugin
  * @author		ConseilGouz
- * @copyright	Copyright (C) 2024 ConseilGouz. All rights reserved.
+ * @copyright	Copyright (C) 2025 ConseilGouz. All rights reserved.
  * @license		GNU/GPL v3; see LICENSE.php
  **/
 namespace ConseilGouz\Plugin\Content\Phocacheckip\Extension; 
 defined( '_JEXEC' ) or die( 'Restricted access' );
-use Joomla\CMS\Plugin\CMSPlugin;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\Event\SubscriberInterface;
 use ConseilGouz\CGSecure\Helper\Cgipcheck;
 
 if (!ComponentHelper::isEnabled('com_phocadownload', true)) {
     return Factory::getApplication()->enqueueMessage(Text::_('CG_PHOCADOWNLOAD_NOT_INSTALLED_ON_YOUR_SYSTEM'),Text::_('CG_PHOCADOWNLOAD_ERROR'));
 }
 
-class Phocacheckip extends CMSPlugin
+class Phocacheckip extends CMSPlugin implements SubscriberInterface
 {	
     public $myname='PhocaDownloadCGSecure';
 	public $mymessage='PhocaDownload : hide to spammer...';
 	public $cgsecure_params;
 
+    public static function getSubscribedEvents(): array
+    {
+        return [
+            'onContentPrepare'   => 'onContentPrepare',
+            'onAjaxCgwebp' => 'onAjaxCgwebp'
+        ];
+    }
+    
 	public function __construct(& $subject, $config) {
 		parent::__construct($subject, $config);
 		$this->loadLanguage();
 		$this->cgsecure_params = Cgipcheck::getParams();
 		
 	}
-	public function onContentPrepare($context, &$article, &$params, $page = 0) {
+	public function onContentPrepare($event) { //$context, &$article, &$params, $page = 0) {
+        $context = $event[0];
 		// Don't run this plugin when the content is being indexed
 		if ($context == 'com_finder.indexer') {
 			return true;
 		}
+        $article = $event[1];
 		// check phocadownload tags
 		$regex_one		= '/({phocadownload\s*)(.*?)(})/si';
 		$regex_all		= '/{phocadownload\s*.*?}/si';

@@ -1,9 +1,8 @@
 <?php
 /**
 * Phoca Check IP Plugin  - Joomla 4.x/5.x plugin
-* Version			: 3.0.0
 * Package			: Phoca Checkip Plugin
-* copyright 		: Copyright (C) 2023 ConseilGouz. All rights reserved.
+* copyright 		: Copyright (C) 2025 ConseilGouz. All rights reserved.
 * license    		: https://www.gnu.org/licenses/gpl-3.0.html GNU/GPL
 */
 // No direct access to this file
@@ -166,5 +165,16 @@ class plgcontentphocacheckipInstallerScript
 		$cachecontroller = Factory::getContainer()->get(CacheControllerFactoryInterface::class)->createCacheController(s);
 		$cachecontroller->clean('_system');
 	}
-	
+    public function delete($files = [])
+    {
+        foreach ($files as $file) {
+            if (is_dir($file)) {
+                Folder::delete($file);
+            }
+
+            if (is_file($file)) {
+                File::delete($file);
+            }
+        }
+    }
 }
