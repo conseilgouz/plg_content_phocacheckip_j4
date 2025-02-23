@@ -1,8 +1,9 @@
 <?php
 /**
 * Phoca Check IP Plugin  - Joomla 4.x/5.x plugin
+* Version			: 3.0.0
 * Package			: Phoca Checkip Plugin
-* copyright 		: Copyright (C) 2025 ConseilGouz. All rights reserved.
+* copyright 		: Copyright (C) 2023 ConseilGouz. All rights reserved.
 * license    		: https://www.gnu.org/licenses/gpl-3.0.html GNU/GPL
 */
 
@@ -31,7 +32,7 @@ return new class () implements ServiceProviderInterface {
         $container->set(
             PluginInterface::class,
             function (Container $container) {
-				$dispatcher = $container->get(DispatcherInterface::class);
+                $dispatcher = $container->get(DispatcherInterface::class);
                 $plugin     = new Phocacheckip(
                     $dispatcher,
                     (array) PluginHelper::getPlugin('content', 'phocacheckip')
