@@ -18,89 +18,88 @@ use Joomla\Log\Log;
 
 class plgcontentphocacheckipInstallerScript
 {
-	private $min_joomla_version      = '4.0.0';
-	private $min_php_version         = '8.0';
-	private $min_secure_version      = '3.5.0';
-	private $name                    = 'Plugin Phoca CheckIP';
-	private $exttype                 = 'plugin';
-	private $extname                 = 'phocacheckip';
-	private $previous_version        = '';
-	private $dir           = null;
-	private $lang;
-	private $installerName = 'plgcontentphocacheckipinstaller';
-	public function __construct()
-	{
-		$this->dir = __DIR__;
-		$this->lang = Factory::getLanguage();
-		$this->lang->load($this->extname);
-	}
-
-    function preflight($type, $parent)
+    private $min_joomla_version      = '4.0.0';
+    private $min_php_version         = '8.0';
+    private $min_secure_version      = '3.5.0';
+    private $name                    = 'Plugin Phoca CheckIP';
+    private $exttype                 = 'plugin';
+    private $extname                 = 'phocacheckip';
+    private $previous_version        = '';
+    private $dir           = null;
+    private $lang;
+    private $installerName = 'plgcontentphocacheckipinstaller';
+    public function __construct()
     {
-		if ( ! $this->passMinimumJoomlaVersion())
-		{
-			$this->uninstallInstaller();
-			return false;
-		}
-
-		if ( ! $this->passMinimumPHPVersion())
-		{
-			$this->uninstallInstaller();
-			return false;
-		}
-		if ( ! $this->passMinimumSecureVersion())
-		{
-			$this->uninstallInstaller();
-			return false;
-		}
-		// To prevent installer from running twice if installing multiple extensions
-		if ( ! file_exists($this->dir . '/' . $this->installerName . '.xml'))
-		{
-			return true;
-		}
+        $this->dir = __DIR__;
+        $this->lang = Factory::getApplication()->getLanguage();
+        $this->lang->load($this->extname);
     }
-    
-    function postflight($type, $parent)
-    {
-		if (($type=='install') || ($type == 'update')) { // remove obsolete dir/files
-			$this->postinstall_cleanup();
-		}
 
-		switch ($type) {
-            case 'install': $message = Text::_('ISO_POSTFLIGHT_INSTALLED'); break;
-            case 'uninstall': $message = Text::_('ISO_POSTFLIGHT_UNINSTALLED'); break;
-            case 'update': $message = Text::_('ISO_POSTFLIGHT_UPDATED'); break;
-            case 'discover_install': $message = Text::_('ISO_POSTFLIGHT_DISC_INSTALLED'); break;
+    public function preflight($type, $parent)
+    {
+        if (! $this->passMinimumJoomlaVersion()) {
+            $this->uninstallInstaller();
+            return false;
         }
-		return true;
+
+        if (! $this->passMinimumPHPVersion()) {
+            $this->uninstallInstaller();
+            return false;
+        }
+        if (! $this->passMinimumSecureVersion()) {
+            $this->uninstallInstaller();
+            return false;
+        }
+        // To prevent installer from running twice if installing multiple extensions
+        if (! file_exists($this->dir . '/' . $this->installerName . '.xml')) {
+            return true;
+        }
     }
-	private function postinstall_cleanup() {
 
-		$obsloteFolders = ['language'];
-		// Remove plugins' files which load outside of the component. If any is not fully updated your site won't crash.
-		foreach ($obsloteFolders as $folder)
-		{
-			$f = JPATH_SITE . '/plugins/plg_content_'.$this->extname.'/' . $folder;
+    public function postflight($type, $parent)
+    {
+        if (($type == 'install') || ($type == 'update')) { // remove obsolete dir/files
+            $this->postinstall_cleanup();
+        }
 
-			if (!@file_exists($f) || !is_dir($f) || is_link($f))
-			{
-				continue;
-			}
+        switch ($type) {
+            case 'install': $message = Text::_('ISO_POSTFLIGHT_INSTALLED');
+                break;
+            case 'uninstall': $message = Text::_('ISO_POSTFLIGHT_UNINSTALLED');
+                break;
+            case 'update': $message = Text::_('ISO_POSTFLIGHT_UPDATED');
+                break;
+            case 'discover_install': $message = Text::_('ISO_POSTFLIGHT_DISC_INSTALLED');
+                break;
+        }
+        return true;
+    }
+    private function postinstall_cleanup()
+    {
 
-			Folder::delete($f);
-		}
-		$langFiles = [
-			sprintf("%s/language/en-GB/en-GB.plg_content_%s.ini", JPATH_ADMINISTRATOR, $this->extname),
-			sprintf("%s/language/en-GB/en-GB.plg_content_%s.sys.ini", JPATH_ADMINISTRATOR, $this->extname),
-			sprintf("%s/language/fr-FR/fr-FR.plg_content_%s.ini", JPATH_ADMINISTRATOR, $this->extname),
-			sprintf("%s/language/fr-FR/fr-FR.plg_content_%s.sys.ini", JPATH_ADMINISTRATOR, $this->extname),
-		];
-		foreach ($langFiles as $file) {
-			if (@is_file($file)) {
-				File::delete($file);
-			}
-		}
-		$db = Factory::getContainer()->get(DatabaseInterface::class);
+        $obsloteFolders = ['language'];
+        // Remove plugins' files which load outside of the component. If any is not fully updated your site won't crash.
+        foreach ($obsloteFolders as $folder) {
+            $f = JPATH_SITE . '/plugins/plg_content_'.$this->extname.'/' . $folder;
+
+            if (!@file_exists($f) || !is_dir($f) || is_link($f)) {
+                continue;
+            }
+
+            Folder::delete($f);
+        }
+        $langFiles = [
+            sprintf("%s/language/en-GB/en-GB.plg_content_%s.ini", JPATH_ADMINISTRATOR, $this->extname),
+            sprintf("%s/language/en-GB/en-GB.plg_content_%s.sys.ini", JPATH_ADMINISTRATOR, $this->extname),
+            sprintf("%s/language/fr-FR/fr-FR.plg_content_%s.ini", JPATH_ADMINISTRATOR, $this->extname),
+            sprintf("%s/language/fr-FR/fr-FR.plg_content_%s.sys.ini", JPATH_ADMINISTRATOR, $this->extname),
+        ];
+        foreach ($langFiles as $file) {
+            if (@is_file($file)) {
+                File::delete($file);
+            }
+        }
+        $db = Factory::getContainer()->get(DatabaseInterface::class);
         $conditions = array(
             $db->qn('type') . ' = ' . $db->q('plugin'),
             $db->qn('element') . ' = ' . $db->quote('phocacheckip')
@@ -108,54 +107,51 @@ class plgcontentphocacheckipInstallerScript
         $fields = array($db->qn('enabled') . ' = 1');
 
         $query = $db->getQuery(true);
-		$query->update($db->quoteName('#__extensions'))->set($fields)->where($conditions);
-		$db->setQuery($query);
+        $query->update($db->quoteName('#__extensions'))->set($fields)->where($conditions);
+        $db->setQuery($query);
         try {
-	        $db->execute();
-        }
-        catch (RuntimeException $e) {
+            $db->execute();
+        } catch (RuntimeException $e) {
             Log::add('unable to enable plugin simpleaccordeon', Log::ERROR, 'jerror');
         }
 
-	}
+    }
 
-	// Check if Joomla version passes minimum requirement
-	private function passMinimumJoomlaVersion()
-	{
-		$j = new Version();
-		$version=$j->getShortVersion(); 
-		if (version_compare($version, $this->min_joomla_version, '<'))
-		{
-			Factory::getApplication()->enqueueMessage(
-				'Incompatible Joomla version : found <strong>' . $version . '</strong>, Minimum : <strong>' . $this->min_joomla_version . '</strong>',
-				'error'
-			);
+    // Check if Joomla version passes minimum requirement
+    private function passMinimumJoomlaVersion()
+    {
+        $j = new Version();
+        $version = $j->getShortVersion();
+        if (version_compare($version, $this->min_joomla_version, '<')) {
+            Factory::getApplication()->enqueueMessage(
+                'Incompatible Joomla version : found <strong>' . $version . '</strong>, Minimum : <strong>' . $this->min_joomla_version . '</strong>',
+                'error'
+            );
 
-			return false;
-		}
+            return false;
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	// Check if PHP version passes minimum requirement
-	private function passMinimumPHPVersion()
-	{
+    // Check if PHP version passes minimum requirement
+    private function passMinimumPHPVersion()
+    {
 
-		if (version_compare(PHP_VERSION, $this->min_php_version, '<'))
-		{
-			Factory::getApplication()->enqueueMessage(
-					'Incompatible PHP version : found  <strong>' . PHP_VERSION . '</strong>, Minimum <strong>' . $this->min_php_version . '</strong>',
-				'error'
-			);
-			return false;
-		}
+        if (version_compare(PHP_VERSION, $this->min_php_version, '<')) {
+            Factory::getApplication()->enqueueMessage(
+                'Incompatible PHP version : found  <strong>' . PHP_VERSION . '</strong>, Minimum <strong>' . $this->min_php_version . '</strong>',
+                'error'
+            );
+            return false;
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	// Check if CG Secure version passes minimum requirement
-	private function passMinimumSecureVersion()
-	{
+    // Check if CG Secure version passes minimum requirement
+    private function passMinimumSecureVersion()
+    {
         $db = Factory::getContainer()->get(DatabaseInterface::class);
         $query = $db->getQuery(true);
         $query->select('manifest_cache');
@@ -165,35 +161,35 @@ class plgcontentphocacheckipInstallerScript
         $manifest = json_decode($db->loadResult(), true);
         if ($manifest['version'] < $this->min_secure_version) {
             Factory::getApplication()->enqueueMessage(
-                    'Incompatible CG Secure version : found  <strong>' . $manifest['version'] . '</strong>, Minimum <strong>' . $this->min_secure_version . '</strong>',
-				'error'
-			);            
+                'Incompatible CG Secure version : found  <strong>' . $manifest['version'] . '</strong>, Minimum <strong>' . $this->min_secure_version . '</strong>',
+                'error'
+            );
             return false;
         }
-        return $true;
-	}
+        return true;
+    }
 
 
-	private function uninstallInstaller()
-	{
-		if ( ! is_dir(JPATH_PLUGINS . '/system/' . $this->installerName)) {
-			return;
-		}
-		$this->delete([
-			JPATH_PLUGINS . '/system/' . $this->installerName . '/language',
-			JPATH_PLUGINS . '/system/' . $this->installerName,
-		]);
-		$db = Factory::getContainer()->get(DatabaseInterface::class);
-		$query = $db->getQuery(true)
-			->delete('#__extensions')
-			->where($db->quoteName('element') . ' = ' . $db->quote($this->installerName))
-			->where($db->quoteName('folder') . ' = ' . $db->quote('system'))
-			->where($db->quoteName('type') . ' = ' . $db->quote('plugin'));
-		$db->setQuery($query);
-		$db->execute();
-		$cachecontroller = Factory::getContainer()->get(CacheControllerFactoryInterface::class)->createCacheController(s);
-		$cachecontroller->clean('_system');
-	}
+    private function uninstallInstaller()
+    {
+        if (! is_dir(JPATH_PLUGINS . '/system/' . $this->installerName)) {
+            return;
+        }
+        $this->delete([
+            JPATH_PLUGINS . '/system/' . $this->installerName . '/language',
+            JPATH_PLUGINS . '/system/' . $this->installerName,
+        ]);
+        $db = Factory::getContainer()->get(DatabaseInterface::class);
+        $query = $db->getQuery(true)
+            ->delete('#__extensions')
+            ->where($db->quoteName('element') . ' = ' . $db->quote($this->installerName))
+            ->where($db->quoteName('folder') . ' = ' . $db->quote('system'))
+            ->where($db->quoteName('type') . ' = ' . $db->quote('plugin'));
+        $db->setQuery($query);
+        $db->execute();
+        $cachecontroller = Factory::getContainer()->get(CacheControllerFactoryInterface::class)->createCacheController(s);
+        $cachecontroller->clean('_system');
+    }
     public function delete($files = [])
     {
         foreach ($files as $file) {
