@@ -14,7 +14,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\Event\SubscriberInterface;
-use ConseilGouz\CGSecure\Helper\Cgipcheck;
+use ConseilGouz\CGSecure\Cgipcheck;
 
 if (!ComponentHelper::isEnabled('com_phocadownload', true)) {
     return Factory::getApplication()->enqueueMessage(Text::_('CG_PHOCADOWNLOAD_NOT_INSTALLED_ON_YOUR_SYSTEM'), Text::_('CG_PHOCADOWNLOAD_ERROR'));

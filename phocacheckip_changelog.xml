@@ -3,6 +3,18 @@
 		<element>phocacheckip</element>
 		<type>plugin</type>
 		<group>content</group>
+		<version>3.5.0</version>
+        <note>
+            <item>Update : 17/07/2025</item>
+        </note>
+         <fix>
+            <item>CG Secure 3.5.0 compatibility</item>
+        </fix>
+	</changelog>
+	<changelog>
+		<element>phocacheckip</element>
+		<type>plugin</type>
+		<group>content</group>
 		<version>3.0.3</version>
         <note>
             <item>Update : 23/02/2025</item>
